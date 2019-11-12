@@ -1,0 +1,25 @@
+body {
+    font-family: 'Nunito', sans-serif;
+    color: $mainCyan;
+    font-size: 1.2rem;
+}
+
+a {
+	color: $mainDark;
+    text-decoration: none;
+    
+    &:hover {
+        color: $mainCyan;
+        text-decoration: none;
+    }
+
+    /* visited link */
+    &:visited {
+        color: $mainCyan;
+    }
+
+    /* selected link */
+    &:active {
+      color: $mainCyan;
+    }
+}

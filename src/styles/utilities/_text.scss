@@ -1,0 +1,69 @@
+.text {
+    &-blue {
+        color: $mainBlue;
+    }
+
+    &-green {
+        color: $mainGreen;
+    }
+
+    &-purple {
+        color: $mainPurple;
+    }
+
+    &-red {
+        color: $mainRed;
+    }
+
+    &-cyan {
+        color: $mainCyan;
+    }
+    // Defines the indentation of the element's first line of text.
+    &-indent {
+        text-indent: 40px;
+    }
+}
+
+.font {
+    &-sm {
+        font-size: 0.8rem;
+    }
+
+    &-md {
+        font-size: 1rem;
+    }
+
+    &-lg {
+        font-size: 1.2rem;
+    }
+
+    &-xl {
+        font-size: 1.4rem;
+    }
+
+    &-xxl {
+        font-size: 1.4rem;
+    }
+
+    &-italic {
+        font-style: italic;
+    }
+
+    &-oblique {
+        font-style: oblique;
+    }
+    
+    &-wt {
+        &-lt {
+            font-weight: 200;
+        }
+
+        &-md {
+            font-weight: 400;
+        }
+
+        &-b {
+            font-weight: 600;
+        }
+    }
+}

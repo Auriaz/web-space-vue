@@ -1,0 +1,55 @@
+@mixin atSmaller {
+  @media (min-width: 480px) {
+    @content;
+  } 
+}
+
+@mixin atSmall {
+  @media (min-width: 720px) {
+    @content;
+  } 
+}
+
+@mixin atMedium {
+  @media (min-width: 960px) {
+    @content;
+  } 
+}
+
+@mixin atLarge {
+  @media (min-width: 1200px) {
+    @content;
+  } 
+}
+
+@mixin atExtraLarge {
+  @media (min-width: 1440px) {
+    @content;
+  } 
+}
+
+
+@mixin inMedium {
+  @media (max-width: 960px) {
+    @content;
+  } 
+}
+
+
+@mixin clearfix {
+    &:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+}
+
+@mixin radial-gradient($from, $to) {
+	background: -moz-radial-gradient(center, circle cover, $from 0%, $to 100%);
+	background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, $from), color-stop(100%, $to));
+	background: -webkit-radial-gradient(center, circle cover, $from 0%, $to 100%);
+	background: -o-radial-gradient(center, circle cover, $from 0%, $to 100%);
+	background: -ms-radial-gradient(center, circle cover, $from 0%, $to 100%);
+	background: radial-gradient(center, circle cover, $from 0%, $to 100%);
+	background-color: $from;
+}

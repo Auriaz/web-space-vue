@@ -1,0 +1,123 @@
+.nav { 
+	width: 100vw;
+	position: absolute;
+	top: 0;
+	left: 0;
+	transition: all 1.5s ease-in-out;	
+	z-index: 3;	
+	// background-color: rgba($color: $mainWhite, $alpha: 1) !important;
+
+	&-wrap {
+		width: 100%;
+		position: relative;
+		display: none;
+		flex-flow: wrap column;
+
+		@include inMedium {
+			background-color: $mainPurple;
+			border-bottom: 2px solid $mainDark;
+		}
+
+		&-sm {
+			// width: 100%;
+			position: relative;
+			// display: flex;
+			top: 0;
+			left: 0;
+			flex-direction: column;
+			flex-wrap: wrap;
+			justify-content: space-between;
+			padding: 20px;
+			cursor: pointer;
+
+			@include atMedium {
+				display: none;
+			}
+		}
+
+		@include atMedium {
+			display: flex;
+			flex-flow: wrap row;
+		}
+	}
+
+	&-list {
+		width: 100%;
+		position: relative;
+		line-height: 200%;
+		display: flex;
+		flex-flow: wrap column;
+        font-variant: small-caps;
+
+		
+		@include atMedium {
+			width: 100%;
+			flex-flow: wrap row;
+			justify-content: flex-end;
+		}
+	}
+
+	&-section {
+		width: 100%;		
+		letter-spacing: 1px;
+		text-align: center;	
+		padding: 20px;
+		cursor: pointer;
+
+		@include inMedium {
+			border-bottom: 1px solid $mainCyan;
+
+			&:hover {
+				background-color: darken($color: $mainBlue, $amount: 20%);
+			}
+		}
+	
+		@include atMedium {
+			width: 140px;
+			padding: 10px;
+
+			&:hover {
+				color: lighten($color: $mainCyan, $amount: 20%);
+				transform: scale(1.1);
+			}
+		}
+
+		@include atLarge {
+			width: 150px;
+		}
+
+		@include atExtraLarge {
+			width: 160px;
+		}
+	}
+
+	&-logo {
+		width: 160px;
+		position: absolute;
+		top: 20px;
+		left: 50%;
+		transform: translateX(-50px);
+		z-index: 2;
+
+		@include atMedium {
+			// position: relative;
+			top: 20px;
+			left: 100px;
+		}
+	}
+
+	&-open {
+		width: 20px;
+		position: absolute;
+		top: 0;
+		right: 0px;
+
+		@include atMedium {
+			display: none;
+		}
+	}
+
+	&-drawer {
+		z-index: 10;
+	}
+}

@@ -1,0 +1,23 @@
+.bg {
+    &-color {
+         &-blue {
+            background-color: $mainBlue;
+        }
+
+        &-green {
+            background-color: $mainGreen;
+        }
+
+        &-purple {
+            background-color: $mainPurple;
+        }
+
+        &-red {
+            background-color: $mainRed;
+        }
+
+        &-cyan {
+            background-color: $mainCyan;
+        }
+    }
+}
