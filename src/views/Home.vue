@@ -84,12 +84,12 @@ export default {
     data() {
         return {
             items: [],
-            entry: {id: 1, title: 'Zapraszamy do udziału w projekcie', description: 'Framework dla aplikacji internetowych napisany w języku PHP bazujący na wzorcu projektowym MVC. Wydany na licencji X11', icon: 'fa-edit'},
+            entry: {id: 1, title: 'Strona w budowie', description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit cumque quam voluptatem odio sed alias pariatur quos eveniet iure', icon: 'fa-edit'},
             introductions: [
-                {id: 2, title: 'Projektowanie stron internetowych', description: 'Framework dla aplikacji internetowych napisany w języku PHP bazujący na wzorcu projektowym MVC. Wydany na licencji X11', icon: 'fa-edit'},
-                {id: 3, title: 'System zarządzania treścią', description: '     Vuex to wzorzec zarządzania stanem + biblioteka dla aplikacji Vue.js. Służy jako scentralizowany sklep', icon: 'fa-chalkboard-teacher'},
-                {id: 4, title: 'Hosting oraz opieka nad stroną ', description: 'Vuetify to platforma komponentów projektowania materiałów dla Vue.js. Ma na celu zapewnienie ', icon: 'fa-tools'},
-                {id: 5, title: 'Tworzenie logo', description: ' Vue.js jest jednym z trzech najbardziej popularnych frameworków JavaScript. ', icon: 'fa-pencil-ruler'},
+                {id: 2, title: 'Projektowanie stron', description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit cumque quam voluptatem odio sed alias pariatur quos eveniet iure', icon: 'fa-edit'},
+                {id: 3, title: 'Nowatorski CMS', description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit cumque quam voluptatem odio sed alias pariatur quos eveniet iure', icon: 'fa-chalkboard-teacher'},
+                {id: 4, title: 'Hosting oraz opieka', description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit cumque quam voluptatem odio sed alias pariatur quos eveniet iure', icon: 'fa-tools'},
+                {id: 5, title: 'Tworzenie logo', description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit cumque quam voluptatem odio sed alias pariatur quos eveniet iure', icon: 'fa-pencil-ruler'},
             ],
             packages: [
                 {id: 1, title: 'Podstawowy', description: 'Przedstaw podstawowe informacje o firmie.', price: '1500', specification:[{title:'System CMS', subtitle: 'System zarządzania treścią', href: '/'},{title:'Strona typu One-Page', subtitle: 'System zarządzania treścią', href: '/'},{title:'Budowa treści', subtitle: 'System zarządzania treścią', href: '/'}
@@ -98,7 +98,7 @@ export default {
                 ], isPublished: true},
                 {id: 3, title: 'Premium', description: 'Przedstaw podstawowe informacje o firmie.', price: '3000', specification: [{title:'System CMS', subtitle: 'System zarządzania treścią', href: '/'},{title:'Strona typu One-Page', subtitle: 'System zarządzania treścią', href: '/'},{title:'Budowa treści', subtitle: 'System zarządzania treścią', href: '/'}
                 ], isPublished: true},
-                {id: 4, title: 'VIP', description: 'Przedstaw podstawowe informacje o firmie.', price: '6000', specification: [{title:'System CMS', subtitle: 'System zarządzania treścią', href: '/'},{title:'Strona typu One-Page', subtitle: 'System zarządzania treścią', href: '/'},{title:'Budowa treści', subtitle: 'System zarządzania treścią', href: '/'}, {title:'Budowa ', subtitle: 'System zarządzania treścią', href: '/'}, {title:'Treści', subtitle: 'System zarządzania treścią', href: '/'}
+                {id: 4, title: 'VIP', description: 'Przedstaw podstawowe informacje o firmie.', price: 'do uzgodnienia', specification: [{title:'System CMS', subtitle: 'System zarządzania treścią', href: '/'},{title:'Strona typu One-Page', subtitle: 'System zarządzania treścią', href: '/'},{title:'Budowa treści', subtitle: 'System zarządzania treścią', href: '/'}, {title:'Budowa ', subtitle: 'System zarządzania treścią', href: '/'}, {title:'Treści', subtitle: 'System zarządzania treścią', href: '/'}
                 ], isPublished: true},
             ],
             contact: {

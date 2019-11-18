@@ -1,10 +1,10 @@
 <template>
     <v-form class="px-3" v-model="valid" ref="form">
-        <v-text-field label="Tytuł" v-model="title" prepend-icon="far fa-folder" :counter="3" :rules="inputRules" required></v-text-field>
-        <v-text-field label="Imię i Nazwisko" v-model="surname" prepend-icon="far fa-user" :counter="3" :rules="inputRules" required></v-text-field>
-        <v-text-field label="Telefon" v-model="telephone" prepend-icon="fas fa-phone-volume" :counter="3" :rules="inputRules" required></v-text-field>
-        <v-text-field label="E-mail" v-model="email" prepend-icon="far fa-envelope" :rules="emailRules" required></v-text-field>
-        <v-textarea label="Informacja" v-model="content" prepend-icon="fas fa-pencil-alt" :counter="10" :rules="textRules" required></v-textarea>
+        <v-text-field label="Tytuł" v-model="message.title" prepend-icon="far fa-folder" :counter="3" :rules="inputRules" required></v-text-field>
+        <v-text-field label="Imię i Nazwisko" v-model="message.surname" prepend-icon="far fa-user" :counter="3" :rules="inputRules" required></v-text-field>
+        <v-text-field label="Telefon" v-model="message.telephone" prepend-icon="fas fa-phone-volume" :counter="3" :rules="inputRules" required></v-text-field>
+        <v-text-field label="E-mail" v-model="message.email" prepend-icon="far fa-envelope" :rules="emailRules" required></v-text-field>
+        <v-textarea label="Informacja" v-model="message.content" prepend-icon="fas fa-pencil-alt" :counter="10" :rules="textRules" required></v-textarea>
 
         <!-- <v-menu>
             <template v-slot:activator="{ on }">
@@ -26,11 +26,14 @@ export default {
     data() {
         return {
             valid: false,
-            surname: '',
-            telephone: '',
-            email: '',
-            title: 'Formularz zgłoszeniowy z strony internetowej',
-            content: '',
+            message: {
+                surname: '',
+                telephone: '',
+                email: '',
+                title: '',
+                content: '',
+                creatAt: new Date(),
+            },
             // due: null,
             inputRules: [
                 v => !!v || 'Tytuł jest wymagany',
@@ -52,25 +55,8 @@ export default {
         submit() {
            if(this.$refs.form.validate()) {
                this.loading = true;
-
-            //    const message = ({
-            //         surname: this.surname,
-            //         telephone: this.telephone,
-            //         email: this.email,
-            //         title: this.title,
-            //         content: this.content,
-            //         due: this.due,
-            //         person: 'Chang Li',
-            //         status: 'ongoing'
-            //     })
                 
-                // console.log(project);
-                // const msg = {
-                //     color: 'success',
-                //     content: 'Wiadomość została wysłana'
-                // }
-               db.collection('messages').add().then(() => {
-            //        console.log('Dodano do bazy danych')
+               db.collection('messages').add(this.message).then(() => {
                         this.$store.commit('addMessage', {       
                             icon: 'fas fa-envelope',
                             color: 'success',
@@ -79,10 +65,8 @@ export default {
                         })
 
                         this.loading = false;
-                        // this.dialog = false;
                         this.$emit('dialogClose')
                })
-            //    console.log(this.title, this.content, this.due)
            }
         }
     },

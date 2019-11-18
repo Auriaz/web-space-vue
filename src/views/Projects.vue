@@ -1,6 +1,6 @@
 <template>
     <div class="projects">
-        <h1 class="title grey--text">Projects</h1>
+        <h1 class="title text-center grey--text">Projects</h1>
 
         <v-container class="my-5">
             <v-row justify="center">
@@ -10,7 +10,7 @@
                     <v-expansion-panel-content >
                         <v-card>
                             <v-card-text class="grey--text">
-                                <div class="font-weight-bold">due by {{ project.due }}</div>
+                                <div class="font-weight-bold">Czas ukończenia {{ project.due }}</div>
                                 <div>{{ project.content }}</div>
                             </v-card-text>
                         </v-card>
@@ -29,7 +29,6 @@
 
 <script>
 import VPopup from '../components/modals/VPopup'
-// import db from '@/fb'
 
 export default {
     name: 'projects',
@@ -39,9 +38,9 @@ export default {
     data() {
         return {
             projects: [
-                {title: "Wyprawy w głąb serca", person: 'Chun Li', due: '2019-10-11', status: 'ongoing', content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda voluptate corrupti culpa ducimus, maxime, minus doloribus vero odio, et sunt consectetur voluptatem cumque? '},
-                {title: "Znaleść lecz nie mieć", person: 'Ryu', due: '2019-10-11', status: 'copleate', content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda voluptate corrupti culpa ducimus, maxime, minus doloribus vero odio, et sunt consectetur voluptatem cumque? '},
-                {title: "Robot myślący", person: 'Gouken', due: '2019-10-11', status: 'overdue', content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda voluptate corrupti culpa ducimus, maxime, minus doloribus vero odio, et sunt consectetur voluptatem cumque? '}
+                {title: "Strona jest w przygotwaniu", person: 'Dr.Strange', due: '2019-10-11', status: 'ongoing', content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda voluptate corrupti culpa ducimus, maxime, minus doloribus vero odio, et sunt consectetur voluptatem cumque? '},
+                {title: "Strona jest w przygotwaniu", person: 'Vision', due: '2019-10-11', status: 'copleate', content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda voluptate corrupti culpa ducimus, maxime, minus doloribus vero odio, et sunt consectetur voluptatem cumque? '},
+                {title: "Strona jest w przygotwaniu", person: 'Thanos', due: '2019-10-11', status: 'overdue', content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda voluptate corrupti culpa ducimus, maxime, minus doloribus vero odio, et sunt consectetur voluptatem cumque? '}
             ],
             name: 'skontaktuj się',
             colorBtn: 'success'
@@ -50,7 +49,7 @@ export default {
     computed: {
         myProjects() {
             return this.projects.filter(project => {
-                return project.person === 'Chun Li'
+                return project.person === 'Vision'
             })
         }
     },
