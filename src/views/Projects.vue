@@ -38,9 +38,7 @@ export default {
     data() {
         return {
             projects: [
-                {title: "Strona jest w przygotwaniu", person: 'Dr.Strange', due: '2019-10-11', status: 'ongoing', content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda voluptate corrupti culpa ducimus, maxime, minus doloribus vero odio, et sunt consectetur voluptatem cumque? '},
-                {title: "Strona jest w przygotwaniu", person: 'Vision', due: '2019-10-11', status: 'copleate', content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda voluptate corrupti culpa ducimus, maxime, minus doloribus vero odio, et sunt consectetur voluptatem cumque? '},
-                {title: "Strona jest w przygotwaniu", person: 'Thanos', due: '2019-10-11', status: 'overdue', content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda voluptate corrupti culpa ducimus, maxime, minus doloribus vero odio, et sunt consectetur voluptatem cumque? '}
+              
             ],
             name: 'skontaktuj się',
             colorBtn: 'success'

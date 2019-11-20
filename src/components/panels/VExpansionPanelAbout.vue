@@ -1,7 +1,7 @@
 <template>
     <div class="about">
         <div class="about__box-images" >  
-            <div class="about__box-image my-5" v-for="image in images" :key="image.id" :class="{ action: image.isAction }">
+            <div class="about__box-image my-5" v-for="image in images" :key="image.id" :class="{ action: image.active }">
                 <v-avatar>
                     <v-img :src="image.src"  alt="Avatar" width="100" height="50" ></v-img>
                 </v-avatar>
@@ -25,31 +25,26 @@ export default {
     name: 'v-expansion-panel-about',
     data() {
         return {
-            informations: [
-                {id: 1, title: 'Strona jest w budowie', content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', isActive: false},                
-                {id: 2, title: 'Strona jest w budowie', content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', isActive: false},
-
-                {id: 3, title: 'Strona jest w budowie', content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', isActive: false},
-            ],
-            images: [
-                {id: 1, src: '/uploads/images/avatar/dr_strange.jpg', isAction: false},
-                {id: 2, src: '/uploads/images/avatar/vision.jpg', isAction: false},
-                {id: 3, src: '/uploads/images/avatar/panther.jpg', isAction: false},
-            ],
-            // isAction: false
+            informations: [],
+            images: [],
         }
     },
+
     methods: {
         onAction(id) {
             this.images.forEach(image => {
-                image.isAction = false
+                image.active = false
              
                 if(image.id == id ) {
-                    image.isAction = !image.isAction
+                    image.active = !image.active
                 }
                 
             })
         }
+    },
+    created() {
+        this.informations = this.$store.getters.leadedJsonSection('informations').content
+        this.images = this.$store.getters.leadedJsonSection('images').content
     },
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
     <v-app>
-        <v-nav/>   
+        <v-nav :user="user" :online="online"/>   
     
         <v-content>
             <router-view></router-view>
@@ -28,7 +28,13 @@
         },
         computed: {
             messages() {
-                return this.$store.state.messages;
+                return this.$store.state.messages
+            },
+            online() {
+                return this.$store.getters.online
+            },
+            user() {
+                return this.$store.state.user
             }
         },
         methods: {

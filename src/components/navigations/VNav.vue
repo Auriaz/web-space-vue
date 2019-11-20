@@ -8,7 +8,7 @@
                 </router-link> 
             </v-toolbar-title>
 
-            <div class="nav-wrap-sm" @click="isActived = !isActived">            
+            <div class="nav-wrap-sm" @click="active = !active">            
                 <v-icon class="fas fa-bars"></v-icon>
             </div>
 
@@ -18,7 +18,7 @@
 
             <v-spacer></v-spacer>
 
-            <div :class="{flex: isActived}" class="nav-wrap">
+            <div :class="{flex: active}" class="nav-wrap">
                 <span class="nav-list">
                     <v-tooltip bottom>
                         <template v-slot:activator="{ on }">
@@ -79,12 +79,13 @@
                     <v-layout column align-center>
                         <v-flex class="mt-5">
                             <v-avatar size="100">
-                                <v-img src="/uploads/images/avatar/dr_strange.jpg" alt="Avatar"></v-img>
+                                <v-img v-if="online && user" :src="user.avatar_url" :alt="user.avatar"></v-img>
+                                <v-img v-else src="/uploads/images/avatar/dr_strange.jpg" alt="logo web-space"></v-img>
                             </v-avatar>
                         </v-flex>
 
                         <v-flex class="mt-1 mb-4">
-                            <h1 v-if="user" class="title white--text">{{ user.username }}</h1>
+                            <h1 v-if="online && user" class="title white--text">{{ user.first_name }} {{ user.last_name }}</h1>
                             <h1 v-else class="title white--text">Web-Space.pl</h1>
                         </v-flex>
 
@@ -103,17 +104,27 @@
                         </v-list-item-content>
                     </v-list-item>
 
-                    <v-list-item v-if="user" @click="user" router to="/logout">
+                    <v-list-item v-if="online" router to="/dashboard">
+                        <v-list-item-icon>
+                            <v-icon class="fas fa-tachometer-alt"></v-icon>
+                        </v-list-item-icon>
+
+                        <v-list-item-content>
+                            <v-list-item-title class="white--text" >Panel użytkownika</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+
+                    <v-list-item v-if="online" @click="logout" router to="/logout">
                         <v-list-item-icon>
                             <v-icon class="fas fa-sign-out-alt"></v-icon>
                         </v-list-item-icon>
 
                         <v-list-item-content>
-                            <v-list-item-title   class="white--text" >Wyloguj się</v-list-item-title>
+                            <v-list-item-title class="white--text" >Wyloguj się</v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
 
-                    <v-list-item v-else @click="isActivated = !isActivated">
+                    <v-list-item v-else @click="activated = !activated">
                         <v-list-item-icon>
                             <v-icon class="fas fa-user"></v-icon>
                         </v-list-item-icon>
@@ -125,7 +136,7 @@
                 </v-list-item-group>
             </v-list>
 
-            <v-form-login v-if="isActivated && !user" @user-authenticated="onUserAuthenticated"></v-form-login>
+            <v-form-login v-if="activated && !online"></v-form-login>
         </v-navigation-drawer>
     </v-app-bar>
 </template>
@@ -145,12 +156,12 @@ export default {
     },
     data() {
         return {
-            isActived: false,
+            active: false,
             drawer: false,// todo naprawić     
             name: 'skontaktuj się',
             colorBtn: 'success',
-            isActivated: false,
-            user: null,
+            activated: false,
+            // user: null,
             links: [
                 {icon: 'fa-home',           text: 'Home',     route: '/'},
                 {icon: 'fa-street-view',    text: 'My Projects',   route: '/projects'},
@@ -159,7 +170,11 @@ export default {
             ], 
         }
     },
+    props: ['online', 'user'],
     methods: {
+        logout() {
+            
+        }
     },
 }
 </script>

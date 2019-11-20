@@ -6,7 +6,7 @@
             </v-col>
 
             <v-col cols="12">
-                <v-text-field @click:append="show = !show" outlined rounded dense v-model="password" :append-icon="show ? 'far fa-eye' : 'far fa-eye-slash'" :rules="[passRules.required, passRules.min]" :type="show ? 'text' : 'password'" label="Hasło"  required></v-text-field>
+                <v-text-field @click:append="show = !show" outlined rounded dense v-model="password" :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'" :rules="[passRules.required, passRules.min]" :type="show ? 'text' : 'password'" label="Hasło"  required></v-text-field>
             </v-col>
 
             <v-col cols="12">
@@ -19,8 +19,6 @@
 </template>
 
 <script>
-    import axios from 'axios';
-
     export default {
         name: 'v-form-login',
         components: {
@@ -49,43 +47,7 @@
             submit() {
                this.loading = true;
 
-                const user = {
-                    email: this.email,
-                    password: this.password
-                }
-
-                axios
-                    .post('/login', user)
-                    .then(response => {
-                        const msg = {       
-                            icon: 'fas fa-user',
-                            color: 'success',
-                            text: this.password,
-                            snackbar: true,
-                        }
-                        
-                        this.$emit('user-authenticated', response.headers.location);
-                        this.email = '';
-                        this.password = '';
-
-                        this.$store.commit('addMessage', msg)
-                    }).catch(error => {
-                        const msg = {       
-                            icon: 'fas fa-user',
-                            color: 'error',
-                            text: 'Błąd przy logowaniu',
-                            snackbar: true,
-                        }
-
-                        if (error.response.data) {
-                            msg.text = error.response.data.error
-                        } 
-
-                        this.$store.commit('addMessage', msg)
-                    }).finally(() => {
-                        this.loading = false;
-                    })
-            
+               
             },
         },
     }
