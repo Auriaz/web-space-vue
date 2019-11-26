@@ -5,6 +5,6 @@
     clip-path: polygon(81% 0, 100% 0, 100% 100%, 0 100%, 0 50%);
     top: 0;
     left: 0;
-    @include radial-gradient($mainCyan, darken($mainBlue, 30%));
+    background-color: darken($mainBlue, 30%);
     z-index: 2;
 }

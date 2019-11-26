@@ -10,7 +10,6 @@
 // Generic – reset and/or normalize styles, box-sizing definition, etc. 
 //           This is the first layer which generates actual CSS.
 
-@import "./generic/_reveal-items";
 
 // Elements – styling for bare HTML elements (like H1, A, etc.). 
 //            These come with default styling from the browser so we can redefine them here.
@@ -21,15 +20,10 @@
 // Components – specific UI components. This is where the majority of our work takes place
 //                and our UI components are often composed of Objects and Components
 
-@import "./components/_alert";
-@import "./components/_content";
-@import "./components/_card";
-@import "./components/_modal";
 @import "./components/_nav";
 @import "./components/_overlay";
-@import "./components/_smoke";
 @import "./components/_wallpaper";
-@import "./components/_wrap";
+
 
 
 // Utilities – utilities and helper classes with ability to override anything 

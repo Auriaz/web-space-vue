@@ -19,7 +19,6 @@
 </template>
 
 <script>
-import db from '@/fb'
 
 export default {
     name: 'v-form-contact',
@@ -55,18 +54,7 @@ export default {
         submit() {
            if(this.$refs.form.validate()) {
                this.loading = true;
-                
-               db.collection('messages').add(this.message).then(() => {
-                        this.$store.commit('addMessage', {       
-                            icon: 'fas fa-envelope',
-                            color: 'success',
-                            text: 'Wiadomość została wysłana',
-                            snackbar: true,
-                        })
-
-                        this.loading = false;
-                        this.$emit('dialogClose')
-               })
+                // TODO Połączenie z bazą danych
            }
         }
     },

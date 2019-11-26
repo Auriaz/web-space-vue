@@ -1,5 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import db from '../firebase/firestore'
+import auth from '../firebase/auth'
+
 
 Vue.use(Vuex)
 
@@ -9,9 +12,7 @@ export default new Vuex.Store({
         messages: [
             { icon: 'far fa-handshake', color: 'info', text: 'Witaj na stronie WebSpace', snackbar: true },
         ],
-        loadedBase: [
-            { id: 1, title: 'Strona w budowie', description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit cumque quam voluptatem odio sed alias pariatur quos eveniet iure', icon: 'fa-edit', createdAt: '2019-07-17'},
-        ],
+        loadedBase: [],
         loadedJson: [
             {
                 section: 'entry',
@@ -77,9 +78,10 @@ export default new Vuex.Store({
                 ]
             }
         ],
+        loaded: [],
         users: [
             {
-                id: '1',
+                user_id: '@/users/4',
                 department: 'Web developer',
                 roles: 'ROLE_ADMIN',
                 authenticator: '',
@@ -88,10 +90,11 @@ export default new Vuex.Store({
                 last_name: 'Stankiewicz',
                 password: 'hjgshdafadsnfibd,n;',
                 avatar: 'vision',
-                avatar_url: '/uploads/images/avatar/vision.jpg'
+                avatar_url: '/uploads/images/avatar/vision.jpg',
+                createdAt: '2019-08-28'
             }, 
             {
-                id: '2',
+                user_id: '@/users/2',
                 department: 'Graphic designer',
                 roles: 'ROLE_DESIGNER',
                 authenticator: '',
@@ -100,10 +103,11 @@ export default new Vuex.Store({
                 last_name: 'Stankiewicz',
                 password: 'hjgshdafadsnfibd,n;',
                 avatar: 'vision',
-                avatar_url: '/uploads/images/avatar/vision.jpg'
+                avatar_url: '/uploads/images/avatar/vision.jpg',
+                createdAt:'2019-08-23'
             },
             {
-                id: '3',
+                user_id: '@/users/3',
                 department: 'Social media maverick',
                 roles: 'ROLE_SOCIAL_MEDIA',
                 authenticator: '',
@@ -112,23 +116,13 @@ export default new Vuex.Store({
                 last_name: 'Stankiewicz',
                 password: 'hjgshdafadsnfibd,n;',
                 avatar: 'vision',
-                avatar_url: '/uploads/images/avatar/vision.jpg'
+                avatar_url: '/uploads/images/avatar/vision.jpg',
+                createdAt: '2019-05-23'
             }
         ],
-        user: {
-            id: '1',
-            department: 'Web developer',
-            roles: 'ROLE_ADMIN',
-            authenticator: '',
-            email: 'adam@webspace.pl',
-            first_name: 'Adam',
-            last_name: 'Stankiewicz',
-            password: 'hjgshdafadsnfibd,n;',
-            avatar: 'vision',
-            avatar_url: '/uploads/images/avatar/vision.jpg'
-        }
-
-
+        user: null,
+        loading: false,
+        error: null
     },
     getters: {
         loadedBase: (state) => {
@@ -152,23 +146,229 @@ export default new Vuex.Store({
                 })
             }
         },
+        loading: (state) => {
+            return state.loading
+        },
         online: (state) => {
-            if (state.user) {
+            if (state.user !== null && state.user !== undefined) {
                return  state.online = true
             }
         }
     },
     mutations: {
-        addMessage:(state, msg) => {
+        addMessage: (state, msg) => {
             state.messages.push(msg)
         },
-
+        setLoadedUsers:(state, payload) => {
+            state.users.push(payload)
+        },
+        createdUser: (state, payload) => {
+            state.users.push(payload)
+        },
+        updatedUser: (state, user) => {
+            state.users.forEach(element => {
+                if(element.user_id == user.user_id) {
+                    element = user
+                }
+            });
+        },
+        deletedUser: (state, user_id) => {
+            let index = state.users.findIndex(user => user.user_id == user_id)
+            state.users.splice(index, 1)
+        },
+        setUser: (state, payload) => {
+            state.user = payload
+        },
+        setLoading: (state, payload) => {
+            state.loading = payload
+        },
+        setError: (state, payload) => {
+            state.error = payload
+        },
+        clearError: (state) => {
+            state.error = null
+        },
+        logout: (state) => {
+            state.user = null
+            state.online = false
+        },
     },
     actions: {
-        addMessage: (context, msg) => {
-            setTimeout(function() {
-                context.commit('addMessage', msg)
-            }, 500)
+        deletedUser({ commit }, user_id) {
+            db.collection('users').where('user_id', '==', user_id).get()
+                .then(query => {
+                    query.forEach(doc => {
+                        doc.ref.delete()
+                    });
+                    commit('deletedUser', user_id)
+                    commit('addMessage', {
+                        icon: 'fas fa-envelope',
+                        color: 'success',
+                        text: 'Użytkownik został usuniety',
+                        snackbar: true,
+                    })
+                })
+                .catch(error => {
+                    commit('addMessage', {
+                        icon: 'fas fa-envelope',
+                        color: 'error',
+                        text: error.message,
+                        snackbar: true,
+                    })
+                })
+        },
+        updatedUser({ commit }, user) {
+            db.collection('users')
+            .where('user_id', '==', user.user_id)
+            .get()
+            .then(query => {
+                query.forEach(doc => {  
+                    doc.ref.update(user)
+                    .then(() => {
+                        commit('updatedUser', user.data())
+                        commit('addMessage', {
+                            icon: 'fas fa-envelope',
+                            color: 'success',
+                            text: 'Dane użytkownika zostały uaktualnione',
+                            snackbar: true,
+                        })
+                    })
+                })
+            })
+            .catch(error => {
+                commit('addMessage', {
+                    icon: 'fas fa-envelope',
+                    color: 'error',
+                    text: error.message,
+                    snackbar: true,
+                })
+            })
+        },
+        // editUser ({commit}, user_id, next) {
+        //     db.collection('users').where('user_id', '==', user_id).get()
+        //         .then(query => {
+        //             query.forEach(doc => {
+        //                 next(vm => {
+        //                     vm.user_id = doc.data().user_id
+        //                     vm.department = doc.data().department
+        //                     vm.roles = doc.data().roles
+        //                     vm.authenticator = doc.data().authenticator
+        //                     vm.email = doc.data().email
+        //                     vm.first_name = doc.data().first_name
+        //                     vm.last_name = doc.data().last_name
+        //                     vm.avatar = doc.data().avatar
+        //                     vm.avatar_url = doc.data().avatar_url
+        //                     vm.createdAt = doc.data().createdAt
+        //                 })
+        //             })
+        //         })
+        // },
+        loadUsers ({commit}) {
+            commit('setLoading', true)
+            db.collection('users').orderBy('department').get()
+                .then(query => {
+                    query.forEach(doc => {
+                        const users = {
+                            id: doc.id,
+                            user_id: doc.data().user_id,
+                            department: doc.data().department,
+                            roles: doc.data().roles,
+                            authenticator: doc.data().authenticator,
+                            email: doc.data().email,
+                            first_name: doc.data().first_name,
+                            last_name: doc.data().last_name,
+                            avatar: doc.data().avatar,
+                            avatar_url: doc.data().avatar_url,
+                            createdAt: doc.data().createdAt
+                        }
+                        commit( 'setLoadedUsers', users)
+                    })
+
+                    commit('setLoading', false)
+                })
+                .catch(error => {
+                    commit('setLoading', false)
+                    commit('addMessage', {
+                        icon: 'fas fa-envelope',
+                        color: 'error',
+                        text: error.message,
+                        snackbar: true,
+                    })
+                }) 
+        },
+        createUser({commit}, payload) {
+            db.collection('users').add( payload )
+                .then(docRef => {
+                    const key = docRef.id
+
+                    commit('createdUser', { ...payload, id: key })
+                    commit('addMessage', {
+                        icon: 'fas fa-envelope',
+                        color: 'success',
+                        text: 'Nowy użytkownik został dodany',
+                        snackbar: true,
+                    })
+                })
+                .catch(error => {
+                    commit('addMessage', {
+                        icon: 'fas fa-envelope',
+                        color: 'error',
+                        text: error.message,
+                        snackbar: true,
+                    })
+                })
+            
+        },
+        registration({ commit }, email, password) {
+            commit('setLoading', true)
+            // commit('clearError')
+            auth.createUserWithEmailAndPassword(email, password)
+                .then(user => {
+                    commit('setLoading', false)
+
+                    commit('addMessage', {
+                        icon: 'fas fa-envelope',
+                        color: 'error',
+                        text: user.uid,
+                        snackbar: true,
+                    })
+                })
+                .catch(error => {
+                    commit('setLoading', false)
+                    // commit('setError', error)
+
+                    commit('addMessage', {
+                        icon: 'fas fa-envelope',
+                        color: 'error',
+                        text: error.message,
+                        snackbar: true,
+                    })
+                })
+        },
+        login({ commit }, payload) {
+            commit('setLoading', true)
+            // commit('clearError')
+            auth.signInWithEmailAndPassword(payload.email, payload.password)
+                .then(user => {
+                    commit('setLoading', false)
+                    commit("setUser", { id: user.uid });
+                    commit('addMessage', {
+                        icon: 'fas fa-envelope',
+                        color: 'success',
+                        text: 'Użytkownik został zalogowany',
+                        snackbar: true,
+                    })
+                })
+                .catch(error => {
+                    commit('setLoading', false)
+                    // commit('setError', error.message)
+                    commit('addMessage', {
+                        icon: 'fas fa-envelope',
+                        color: 'error',
+                        text: error.message,
+                        snackbar: true,
+                    })
+                })
         }
     },
     modules: {

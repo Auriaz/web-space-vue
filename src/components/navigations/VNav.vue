@@ -53,18 +53,18 @@
                     <v-tooltip bottom>
                         <template v-slot:activator="{ on }">
                             <a href="/#introduction" class="nav-section blue-grey--text font-weight-bold" v-on="on">
-                                Introduction
+                                Oferta
                             </a>   
                         </template>
                     
-                        <span>Introduction</span>
+                        <span>Oferta</span>
                     </v-tooltip>
 
                     <v-tooltip bottom>
                         <template v-slot:activator="{ on }">
-                            <v-app-bar-nav-icon tile large icon class="nav-section d-none d-md-flex ma-2 mx-5" color="blue-grey" @click.stop="drawer = !drawer" v-on="on">
-                                <i class="fas fa-sign-in-alt fa-lg"></i>
-                            </v-app-bar-nav-icon>   
+                            <v-btn small fab outlined class="  ma-3 mx-10" color="blue-grey" @click.stop="drawer = !drawer" v-on="on">
+                                <v-icon>mdi-menu</v-icon>
+                            </v-btn>   
                         </template>
                     
                         <span>Menu</span>
@@ -104,19 +104,9 @@
                         </v-list-item-content>
                     </v-list-item>
 
-                    <v-list-item v-if="online" router to="/dashboard">
+                    <v-list-item v-if="online && user" @click="logout" router to="/">
                         <v-list-item-icon>
-                            <v-icon class="fas fa-tachometer-alt"></v-icon>
-                        </v-list-item-icon>
-
-                        <v-list-item-content>
-                            <v-list-item-title class="white--text" >Panel użytkownika</v-list-item-title>
-                        </v-list-item-content>
-                    </v-list-item>
-
-                    <v-list-item v-if="online" @click="logout" router to="/logout">
-                        <v-list-item-icon>
-                            <v-icon class="fas fa-sign-out-alt"></v-icon>
+                            <v-icon>mdi-logout-variant</v-icon>
                         </v-list-item-icon>
 
                         <v-list-item-content>
@@ -126,7 +116,7 @@
 
                     <v-list-item v-else @click="activated = !activated">
                         <v-list-item-icon>
-                            <v-icon class="fas fa-user"></v-icon>
+                            <v-icon>mdi-login-variant</v-icon>
                         </v-list-item-icon>
 
                         <v-list-item-content>
@@ -136,7 +126,7 @@
                 </v-list-item-group>
             </v-list>
 
-            <v-form-login v-if="activated && !online"></v-form-login>
+            <v-form-login v-if="activated && !online" :online="online"></v-form-login>
         </v-navigation-drawer>
     </v-app-bar>
 </template>
@@ -172,8 +162,17 @@ export default {
     },
     props: ['online', 'user'],
     methods: {
-        logout() {
+        login() {
             
+        },
+        logout() {
+            this.$store.commit('logout')
+            this.$store.commit('addMessage', {
+                icon: 'fas fa-envelope',
+                color: 'success',
+                text: 'Użytkownik został wylogowany',
+                snackbar: true,
+            })
         }
     },
 }

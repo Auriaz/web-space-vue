@@ -5,9 +5,15 @@
     </v-overlay>
 
     <div class="home">
-        <a href="/#introduction" class="home-btn d-none d-md-block">
-            <i class="fas fa-arrow-alt-circle-down fa-2x"></i>
-        </a>
+        <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+                <v-btn outlined fab href="/#introduction" small class="home-btn blue--text" v-on="on">
+                    <i class="fas fa-arrow-alt-circle-down fa-2x"></i>
+                </v-btn>
+            </template>
+                    
+            <span>przewiń w dół</span>
+        </v-tooltip>
 
         <div class="home-entry">
             <span class="home-entry__box">
@@ -61,7 +67,6 @@
 </template>
 
 <script>
-// import db from '@/fb'
 import VCardIntroduction  from '../components/cards/VCardIntroduction';
 import VExpansionPanelAbout  from '../components/panels/VExpansionPanelAbout';
 import VCardPrice  from '../components/cards/VCardPrice';
@@ -78,12 +83,6 @@ export default {
         VExpansionPanelAbout: VExpansionPanelAbout,
         VCardPrice: VCardPrice,
         VCardContact: VCardContact,
-    },
-    props: ['path'],
-    data() {
-        return {
-            items: [],   
-        }
     },
     computed: {
 
@@ -103,23 +102,5 @@ export default {
             return this.$store.getters.leadedJsonSection('about')
         },     
     },
-    methods: {
-    },
-    created() {
-        // this.fetchPackage();
-        // db.collection('projects').onSnapshot(res => {
-        //     const changes = res.docChanges();
-
-        //     changes.forEach(chenge => {
-        //         if(change.type  === 'added') {
-        //             this.projects.push({
-        //                 ...change.doc.data(),
-        //                 id: change.doc.id
-        //             })
-        //         }
-        //     });
-        // })
-    },
-    
 }
 </script> 

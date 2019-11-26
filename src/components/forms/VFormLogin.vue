@@ -1,5 +1,5 @@
-<template>
-    <v-form v-model="valid" ref="form">
+<template >
+    <v-form v-if="!online" v-model="valid" ref="form">
         <v-row class="pa-2" justify="center">
             <v-col cols="12">
                 <v-text-field outlined rounded dense v-model="email" :rules="emailRules" label="E-mail" required></v-text-field>
@@ -13,7 +13,7 @@
                 <v-checkbox v-model="selected" label="zaznacz" color="indigo" hide-details></v-checkbox>
             </v-col>
 
-            <v-btn class="ma-2" outlined color="indigo" @click="submit" :loading="loading">Zaloguj się</v-btn>
+            <v-btn class="ma-2" outlined color="indigo" @click="login" :loading="loading">Zaloguj się</v-btn>
         </v-row>
     </v-form>
 </template>
@@ -42,12 +42,26 @@
                 },
             }
         },
-        props: ['user'],
+        computed: {
+            online() {
+                return this.$store.getters.online
+            },
+        },
         methods: {
-            submit() {
-               this.loading = true;
-
-               
+            async login() {
+                this.loading = true
+                try {
+                    this.$store.dispatch('login', { email: this.email, password: this.password })
+                    this.$refs.form.reset()
+                } catch (error) {
+                    this.$store.commit('addMessage', {
+                        icon: 'fas fa-envelope',
+                        color: 'error',
+                        text: 'Wystąpił błąd w trakcie logowania',
+                        snackbar: true,
+                    })
+                }
+                this.loading = false
             },
         },
     }
