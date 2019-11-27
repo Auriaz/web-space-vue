@@ -1,7 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+
 import db from '../firebase/firestore'
 import auth from '../firebase/auth'
+
 
 
 Vue.use(Vuex)
@@ -195,7 +197,8 @@ export default new Vuex.Store({
     },
     actions: {
         deletedUser({ commit }, user_id) {
-            db.collection('users').where('user_id', '==', user_id).get()
+            db
+                .collection('users').where('user_id', '==', user_id).get()
                 .then(query => {
                     query.forEach(doc => {
                         doc.ref.delete()
@@ -218,31 +221,32 @@ export default new Vuex.Store({
                 })
         },
         updatedUser({ commit }, user) {
-            db.collection('users')
-            .where('user_id', '==', user.user_id)
-            .get()
-            .then(query => {
-                query.forEach(doc => {  
-                    doc.ref.update(user)
-                    .then(() => {
-                        commit('updatedUser', user.data())
-                        commit('addMessage', {
-                            icon: 'fas fa-envelope',
-                            color: 'success',
-                            text: 'Dane użytkownika zostały uaktualnione',
-                            snackbar: true,
-                        })
+            db
+                .collection('users')
+                .where('user_id', '==', user.user_id)
+                .get()
+                .then(query => {
+                    query.forEach(doc => {
+                        doc.ref.update(user)
+                            .then(() => {
+                                commit('updatedUser', user.data())
+                                commit('addMessage', {
+                                    icon: 'fas fa-envelope',
+                                    color: 'success',
+                                    text: 'Dane użytkownika zostały uaktualnione',
+                                    snackbar: true,
+                                })
+                            })
                     })
                 })
-            })
-            .catch(error => {
-                commit('addMessage', {
-                    icon: 'fas fa-envelope',
-                    color: 'error',
-                    text: error.message,
-                    snackbar: true,
+                .catch(error => {
+                    commit('addMessage', {
+                        icon: 'fas fa-envelope',
+                        color: 'error',
+                        text: error.message,
+                        snackbar: true,
+                    })
                 })
-            })
         },
         // editUser ({commit}, user_id, next) {
         //     db.collection('users').where('user_id', '==', user_id).get()
@@ -265,7 +269,11 @@ export default new Vuex.Store({
         // },
         loadUsers ({commit}) {
             commit('setLoading', true)
-            db.collection('users').orderBy('department').get()
+
+            db
+                .collection('users')
+                .orderBy('department')
+                .get()
                 .then(query => {
                     query.forEach(doc => {
                         const users = {
@@ -281,7 +289,7 @@ export default new Vuex.Store({
                             avatar_url: doc.data().avatar_url,
                             createdAt: doc.data().createdAt
                         }
-                        commit( 'setLoadedUsers', users)
+                        commit('setLoadedUsers', users)
                     })
 
                     commit('setLoading', false)
@@ -296,8 +304,10 @@ export default new Vuex.Store({
                     })
                 }) 
         },
-        createUser({commit}, payload) {
-            db.collection('users').add( payload )
+        createUser({ commit }, payload) {
+            db
+                .collection('users')
+                .add(payload)
                 .then(docRef => {
                     const key = docRef.id
 
@@ -317,26 +327,25 @@ export default new Vuex.Store({
                         snackbar: true,
                     })
                 })
-            
         },
-        registration({ commit }, email, password) {
+        registration({ commit }, payload) {
             commit('setLoading', true)
             // commit('clearError')
-            auth.createUserWithEmailAndPassword(email, password)
+            auth
+                .createUserWithEmailAndPassword(payload.email, payload.password)
                 .then(user => {
                     commit('setLoading', false)
 
                     commit('addMessage', {
                         icon: 'fas fa-envelope',
-                        color: 'error',
-                        text: user.uid,
+                        color: 'success',
+                        text: `Konto dla maila ${user.email} zostało utworzone`,
                         snackbar: true,
                     })
                 })
                 .catch(error => {
                     commit('setLoading', false)
                     // commit('setError', error)
-
                     commit('addMessage', {
                         icon: 'fas fa-envelope',
                         color: 'error',
@@ -348,20 +357,42 @@ export default new Vuex.Store({
         login({ commit }, payload) {
             commit('setLoading', true)
             // commit('clearError')
-            auth.signInWithEmailAndPassword(payload.email, payload.password)
+            auth
+                .signInWithEmailAndPassword(payload.email, payload.password)
                 .then(user => {
                     commit('setLoading', false)
                     commit("setUser", { id: user.uid });
                     commit('addMessage', {
                         icon: 'fas fa-envelope',
                         color: 'success',
-                        text: 'Użytkownik został zalogowany',
+                        text: 'Użytkownik został pomyślnie zalogowany',
                         snackbar: true,
                     })
                 })
                 .catch(error => {
                     commit('setLoading', false)
                     // commit('setError', error.message)
+                    commit('addMessage', {
+                        icon: 'fas fa-envelope',
+                        color: 'error',
+                        text: error.message,
+                        snackbar: true,
+                    })
+                })
+        },
+        logout({commit}) {
+            auth
+                .signOut()
+                .then(() => {
+                    commit('logout')
+                    commit('addMessage', {
+                        icon: 'fas fa-envelope',
+                        color: 'success',
+                        text: 'Użytkownik został pomyślnie wylogowany',
+                        snackbar: true,
+                    })
+                })
+                .catch(error => {
                     commit('addMessage', {
                         icon: 'fas fa-envelope',
                         color: 'error',

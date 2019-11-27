@@ -2,11 +2,11 @@
     <v-form v-if="!online" v-model="valid" ref="form">
         <v-row class="pa-2" justify="center">
             <v-col cols="12">
-                <v-text-field outlined rounded dense v-model="email" :rules="emailRules" label="E-mail" required></v-text-field>
+                <v-text-field outlined rounded dense v-model="email" :rules="emailRules" label="E-mail" prepend-inner-icon="mdi-email" required></v-text-field>
             </v-col>
 
             <v-col cols="12">
-                <v-text-field @click:append="show = !show" outlined rounded dense v-model="password" :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'" :rules="[passRules.required, passRules.min]" :type="show ? 'text' : 'password'" label="Hasło"  required></v-text-field>
+                <v-text-field @click:append="show = !show" outlined rounded dense v-model="password" prepend-inner-icon="mdi-lock-question" :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'" :rules="[passRules.required, passRules.min]" :type="show ? 'text' : 'password'" label="Hasło"  required></v-text-field>
             </v-col>
 
             <v-col cols="12">

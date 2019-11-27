@@ -132,7 +132,6 @@
 </template>
 
 <script>
-// import VSiteBar from './VSiteBar'
 import VFormLogin from '../forms/VFormLogin'
 import VPopup from '../modals/VPopup'
 
@@ -142,7 +141,6 @@ export default {
     components: {
         VFormLogin: VFormLogin,
         VPopup: VPopup
-        // VSiteBar: VSiteBar,
     },
     data() {
         return {
@@ -166,13 +164,7 @@ export default {
             
         },
         logout() {
-            this.$store.commit('logout')
-            this.$store.commit('addMessage', {
-                icon: 'fas fa-envelope',
-                color: 'success',
-                text: 'Użytkownik został wylogowany',
-                snackbar: true,
-            })
+            this.$store.dispatch('logout')
         }
     },
 }

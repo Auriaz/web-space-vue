@@ -12,7 +12,7 @@
                     <!-- <v-file-input v-model="avatar" :rules="imageRules" accept="image/png, image/jpeg, image/bmp" placeholder="Dodaj avatara" prepend-icon="mdi-camera" label="Avatar" filled></v-file-input> -->
                 </v-col>
                 <v-col class="col-12 col-md-4 avatar-image">
-                    <v-img v-if="avatar" :src="user.avatar_url" :alt='Avatar' sizes="150"></v-img>
+                    <v-img v-if="user.avatar_url" :src="user.avatar_url" :alt='user.avatar' sizes="150"></v-img>
                 </v-col>
             </v-row>
 
@@ -61,19 +61,18 @@ export default {
     data() {
         return {
             valid: false,
-            password: null,
-            confirm_password: null,
+            password: '',
+            confirm_password: '',
             user: {
-                first_name: null,
-                last_name: null,
-                email: null,
-                roles: null,
-                department: null,
+                first_name: '',
+                last_name: '',
+                email: '',
+                roles: '',
+                department: '',
                 avatar: 'thanos.jpg',
                 avatar_url: '/uploads/images/avatar/thanos.jpg',
                 createdAt: new Date()
             },
-            avatar: [],
             nameRules: [
                 v => !!v || 'Pole jest wymagane',
                 v => (v && v.length >= 3 ) || 'Pole musi się składać przynajmniej z 3 liter',
@@ -109,15 +108,19 @@ export default {
     },
     computed: {
         comparePasswords() {
-            return this.password !== this.confirm_password ? 'Hało musi bć identyczne' : true
+            return this.password !== this.confirm_password ? 'Hało musi być identyczne' : true
         }
     },
     methods: {
         validate () {
             if (this.$refs.form.validate()) {
                 this.loading = true
+
+                this.$store.dispatch('registration', {
+                    email: this.user.email,
+                    password: this.password
+                })
                 this.$store.dispatch('createUser', this.user)
-                this.$store.dispatch('registration', this.user.email, this.password)
                 
                 this.loading = false
                 this.$emit('close')

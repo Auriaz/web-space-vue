@@ -16,11 +16,11 @@ Vue.config.productionTip = false;
 // let app;
 
 // firebase.auth().onAuthStateChanged( user => {
-//     // if(store.state.online) {
-//       // }
-//     if(!app) {
-//         store.commit("setUser", { id: user.uid });
-      // app = 
+    // if(store.state.online) {
+      // }
+    // if(!app) {
+    //     store.commit("setUser", { id: user.uid });
+    //   app = 
       new Vue({
           router,
           store,
