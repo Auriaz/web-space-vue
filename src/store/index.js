@@ -5,7 +5,6 @@ import db from '../firebase/firestore'
 import auth from '../firebase/auth'
 
 
-
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -162,9 +161,11 @@ export default new Vuex.Store({
             state.messages.push(msg)
         },
         setLoadedUsers:(state, payload) => {
+            console.log(`setLoadedUsers: ${payload}`);
             state.users.push(payload)
         },
         createdUser: (state, payload) => {
+            console.log(`createdUser: ${payload}`);
             state.users.push(payload)
         },
         updatedUser: (state, user) => {
@@ -198,7 +199,9 @@ export default new Vuex.Store({
     actions: {
         deletedUser({ commit }, user_id) {
             db
-                .collection('users').where('user_id', '==', user_id).get()
+                .collection('users')
+                .where('user_id', '==', user_id)
+                .get()
                 .then(query => {
                     query.forEach(doc => {
                         doc.ref.delete()
@@ -304,18 +307,17 @@ export default new Vuex.Store({
                     })
                 }) 
         },
-        createUser({ commit }, payload) {
+        createdUser({ commit }, payload) {
             db
                 .collection('users')
                 .add(payload)
                 .then(docRef => {
                     const key = docRef.id
-
                     commit('createdUser', { ...payload, id: key })
                     commit('addMessage', {
                         icon: 'fas fa-envelope',
                         color: 'success',
-                        text: 'Nowy użytkownik został dodany',
+                        text: `Nowy użytkownik o mailu ${payload.email} został dodany`,
                         snackbar: true,
                     })
                 })
@@ -333,13 +335,13 @@ export default new Vuex.Store({
             // commit('clearError')
             auth
                 .createUserWithEmailAndPassword(payload.email, payload.password)
-                .then(user => {
+                .then(query => {
                     commit('setLoading', false)
 
                     commit('addMessage', {
                         icon: 'fas fa-envelope',
                         color: 'success',
-                        text: `Konto dla maila ${user.email} zostało utworzone`,
+                        text: `Konto dla maila ${query.user.email} zostało utworzone`,
                         snackbar: true,
                     })
                 })
@@ -359,9 +361,17 @@ export default new Vuex.Store({
             // commit('clearError')
             auth
                 .signInWithEmailAndPassword(payload.email, payload.password)
-                .then(user => {
+                .then(query => {
                     commit('setLoading', false)
-                    commit("setUser", { id: user.uid });
+                    db.collection("users")
+                        .where("email", "==", query.user.email)
+                        .get()
+                        .then(querySnapshot => {
+                            querySnapshot.forEach(doc => {
+                                commit("setUser", doc.data());
+                            });
+                        });
+
                     commit('addMessage', {
                         icon: 'fas fa-envelope',
                         color: 'success',

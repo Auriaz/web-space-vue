@@ -145,24 +145,19 @@ export default {
     data() {
         return {
             active: false,
-            drawer: false,// todo naprawić     
+            drawer: false,    
             name: 'skontaktuj się',
             colorBtn: 'success',
             activated: false,
-            // user: null,
             links: [
                 {icon: 'fa-home',           text: 'Home',     route: '/'},
                 {icon: 'fa-street-view',    text: 'My Projects',   route: '/projects'},
                 {icon: 'fa-users',          text: 'Team',          route: '/team'},
-                // {icon: 'fa-user',          text: 'Login',          route: '/login'},
             ], 
         }
     },
     props: ['online', 'user'],
     methods: {
-        login() {
-            
-        },
         logout() {
             this.$store.dispatch('logout')
         }

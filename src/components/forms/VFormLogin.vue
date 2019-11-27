@@ -48,19 +48,10 @@
             },
         },
         methods: {
-            async login() {
+            login() {
                 this.loading = true
-                try {
-                    this.$store.dispatch('login', { email: this.email, password: this.password })
-                    this.$refs.form.reset()
-                } catch (error) {
-                    this.$store.commit('addMessage', {
-                        icon: 'fas fa-envelope',
-                        color: 'error',
-                        text: 'Wystąpił błąd w trakcie logowania',
-                        snackbar: true,
-                    })
-                }
+                this.$store.dispatch('login', { email: this.email, password: this.password })
+                this.$refs.form.reset()
                 this.loading = false
             },
         },

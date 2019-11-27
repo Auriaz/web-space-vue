@@ -2,8 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 
-import * as firebase from "firebase/app"
-import "firebase/auth"
+import auth from "../firebase/auth"
 
 Vue.use(VueRouter)
 
@@ -11,11 +10,13 @@ const routes = [
   {
     path: "/",
     name: "home",
-    component: Home
+    component: Home,
+    meta: { requiresGuest: true },
   },
   {
     path: "/projects",
     name: "projects",
+    meta: { requiresGuest: true },
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
@@ -25,6 +26,7 @@ const routes = [
   {
     path: "/team",
     name: "team",
+    meta: { requiresGuest: true },
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
@@ -68,13 +70,38 @@ const router = new VueRouter({
   routes
 })
 
+// Guards
 router.beforeEach((to, from, next)=> {
+  // check for requiresAuth guard
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
-  const isAuthenticated = firebase.auth().currentUser;
+  const requiresGuest = to.matched.some(record => record.meta.requiresGuest);
+  const isAuthenticated = auth.currentUser;
 
-  if (requiresAuth && !isAuthenticated) {
-    next("/");
+  if (requiresAuth) {
+    // Check if Not legged in
+    if (!isAuthenticated) {
+      // Go to homepage
+      next({
+        path: "/",
+        query: {
+          redirect: to.fullPath
+        }
+      });
+
+    } else {
+      // Proceed to rout
+      next();
+    }
+  } else if (requiresGuest) {
+    // Check if legged in
+    if (isAuthenticated) {
+      next();
+    } else {
+      // Proceed to rout
+      next();
+    }
   } else {
+    // Proceed to rout
     next();
   }
 })

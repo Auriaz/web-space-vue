@@ -120,7 +120,7 @@ export default {
                     email: this.user.email,
                     password: this.password
                 })
-                this.$store.dispatch('createUser', this.user)
+                this.$store.dispatch('createdUser', this.user)
                 
                 this.loading = false
                 this.$emit('close')
