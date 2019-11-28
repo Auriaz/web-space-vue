@@ -166,20 +166,20 @@ export default new Vuex.Store({
         }
     },
     actions: {
-        deletedUser({ commit }, email) {
+        deletedUser({ commit }, user) {
             db
                 .collection('users')
-                .where('email', '==', email)
+                .where('email', '==', user.email)
                 .get()
                 .then(query => {
                     query.forEach(doc => {
                         doc.ref.delete()
                     });
-                    commit('deletedUser', email)
+                    commit('deletedUser', user.email)
                     commit('addMessage', {
                         icon: 'fas fa-envelope',
                         color: 'success',
-                        text: `Użytkownik o meilu ${email} został usuniety`,
+                        text: `Użytkownik o meilu ${user.email} został usuniety`,
                         snackbar: true,
                     })
                 })
@@ -262,7 +262,7 @@ export default new Vuex.Store({
                 .add(payload)
                 .then(docRef => {
                     let key = docRef.id
-                    
+
                     commit('createdUser', { ...payload, id: key })
                     commit('addMessage', {
                         icon: 'fas fa-envelope',
