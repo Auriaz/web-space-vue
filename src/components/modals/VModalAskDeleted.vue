@@ -29,8 +29,7 @@ export default {
             this.$emit('cancel')
         },
         deleted() {
-            // this.$store.commit('deletedUser', this.user.user_id)
-            this.$store.dispatch('deletedUser', this.user.user_id)
+            this.$store.dispatch('deletedUser', this.user.email)
 
             this.$emit('cancel')
         }

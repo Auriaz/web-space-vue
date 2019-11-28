@@ -15,18 +15,21 @@
             </v-layout>
         </v-row>
         <v-modal-user-create />
+        <v-progress-image-add/>
     </v-container>
 </template>
 
 <script>
 import VCardUser from '@/components/cards/VCardUser'
 import VModalUserCreate from '@/components/modals/VModalUserCreate'
+import VProgressImageAdd from '@/components/progress/VProgressImageAdd'
 
 export default {
     name: 'accounts',
     components: {
         VCardUser: VCardUser,
-        VModalUserCreate: VModalUserCreate
+        VModalUserCreate: VModalUserCreate,
+        VProgressImageAdd: VProgressImageAdd
     },
     computed: {
         users() {

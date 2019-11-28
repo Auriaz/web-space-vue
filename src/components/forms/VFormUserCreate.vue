@@ -8,11 +8,10 @@
             </v-row>
             <v-row>
                 <v-col class="col-12 col-md-7 ml-8">
-                       <v-text-field v-model="user.avatar_url"  label="*Avatar" prepend-inner-icon="mdi-camera" required clearable filled></v-text-field>
-                    <!-- <v-file-input v-model="avatar" :rules="imageRules" accept="image/png, image/jpeg, image/bmp" placeholder="Dodaj avatara" prepend-icon="mdi-camera" label="Avatar" filled></v-file-input> -->
+                    <v-file-input @change="onFilePicked" :rules="imageRules" accept="image/png, image/jpeg, image/bmp" placeholder="Dodaj avatara" prepend-icon="mdi-camera" label="Avatar" filled></v-file-input>
                 </v-col>
                 <v-col class="col-12 col-md-4 avatar-image">
-                    <v-img v-if="user.avatar_url" :src="user.avatar_url" :alt='user.avatar' sizes="150"></v-img>
+                    <v-img v-if="user.avatar_url" :src="user.avatar_url" sizes="150" ></v-img>
                 </v-col>
             </v-row>
 
@@ -45,7 +44,7 @@
                     <v-select v-model="user.department" :items="department" :rules="[v => !!v || 'Wybór jest wymagany']" label="*Stanowisko" prepend-inner-icon="mdi-settings" required filled></v-select>
                 </v-col>
             </v-row>
-
+            
             <v-row>
                 <v-btn :disabled="!valid" color="success" class="mr-4" :loading="loading" @click="validate">Dodaj</v-btn>
                 <v-btn color="error" class="mr-4" @click="reset">Reset</v-btn>
@@ -56,21 +55,23 @@
 </template>
 
 <script>
+import storage from '../../firebase/storage'
 export default {
-    name: 'v-form-add-user',
+    name: 'v-form-user-create',
     data() {
         return {
             valid: false,
             password: '',
             confirm_password: '',
+            avatar: null,
             user: {
                 first_name: '',
                 last_name: '',
                 email: '',
                 roles: '',
                 department: '',
-                avatar: 'thanos.jpg',
-                avatar_url: '/uploads/images/avatar/thanos.jpg',
+                avatar: '',
+                avatar_url: '',
                 createdAt: new Date()
             },
             nameRules: [
@@ -120,6 +121,43 @@ export default {
                     email: this.user.email,
                     password: this.password
                 })
+                // Create a root reference
+                const storageRef = storage.ref();
+                // Upload file and metadata to the object 'avatar/vision.jpg'
+                let uploadTask = storageRef.child('avatar/' + this.user.avatar).put(this.avatar);
+
+                // Listen for state changes, errors, and completion of the upload.
+                uploadTask.on('state_changed', (snapshot) => {
+                        // TODO - Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+                        var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                        // console.log('Upload is ' + progress + '% done');
+                        this.$store.dispatch('progressEvent', progress);
+                        // switch (snapshot.state) {
+                        // case 'paused':
+                        //     console.log('Upload is paused');
+                        //     break;
+                        // case 'running':
+                        //     console.log('Upload is running');
+                        //     break;
+                        // }
+                    }, (error) => {
+                        // console.log('Error: ' + error)
+                        this.$store.commit('addMessage', {
+                            icon: 'fas fa-envelope',
+                            color: 'error',
+                            text: error,
+                            snackbar: true,
+                        })
+                    // TODO - A full list of error codes is available at
+                    // https://firebase.google.com/docs/storage/web/handle-errors
+                    }, () => {
+                    // Upload completed successfully, now we can get the download URL
+                    uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+                        console.log('File available at', downloadURL);
+                        this.user.avatar_url = downloadURL
+                    });
+                });
+
                 this.$store.dispatch('createdUser', this.user)
                 
                 this.loading = false
@@ -128,11 +166,45 @@ export default {
             }
         },
         reset () {
-            this.$refs.form.reset()
+            this.user = {
+                first_name: '',
+                last_name: '',
+                email: '',
+                roles: '',
+                department: '',
+                avatar: '',
+                avatar_url: '',
+                createdAt: new Date()
+            }
+            this.password = ''
+            this.confirm_password = ''
+            this.avatar = null
+            this.resetValidation ()
         },
         resetValidation () {
             this.$refs.form.resetValidation()
         },
+        onFilePicked(file) {
+            this.user.avatar = file.name
+
+            if(this.user.avatar.lastIndexOf('.') <= 0) {
+                return this.$store.commit('addMessage', {
+                    icon: 'fas fa-envelope',
+                    color: 'success',
+                    text: 'Proszę wybierz zdjęcie',
+                    snackbar: true,
+                })
+            }
+
+            const fileReader = new FileReader()
+
+            fileReader.addEventListener('load', () => {
+                this.user.avatar_url = fileReader.result
+            }) 
+            fileReader.readAsDataURL(file)
+            
+            this.avatar = file
+        }
     },
 }
 </script>
@@ -143,6 +215,8 @@ export default {
 }
 
 .avatar-image {
+    width: 150px;
+    height: 180px;
     border: 1px dotted grey;
 }
 </style>

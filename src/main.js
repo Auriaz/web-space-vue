@@ -18,13 +18,10 @@ Vue.config.productionTip = false;
 let app;
 
 auth.onAuthStateChanged( query => {
-    console.log(query.email);
     db.collection('users').where('email', '==', query.email).get().then(querySnapshot => {
         querySnapshot.forEach(doc => {
             store.commit("setUser", doc.data());
-
         })
-
     })
 
     if(!app) {

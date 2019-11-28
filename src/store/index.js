@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 
 import db from '../firebase/firestore'
 import auth from '../firebase/auth'
+// import storage from '../firebase/storage'
 
 
 Vue.use(Vuex)
@@ -80,50 +81,11 @@ export default new Vuex.Store({
             }
         ],
         loaded: [],
-        users: [
-            {
-                user_id: '@/users/4',
-                department: 'Web developer',
-                roles: 'ROLE_ADMIN',
-                authenticator: '',
-                email: 'adam@webspace.pl',
-                first_name: 'Adam',
-                last_name: 'Stankiewicz',
-                password: 'hjgshdafadsnfibd,n;',
-                avatar: 'vision',
-                avatar_url: '/uploads/images/avatar/vision.jpg',
-                createdAt: '2019-08-28'
-            }, 
-            {
-                user_id: '@/users/2',
-                department: 'Graphic designer',
-                roles: 'ROLE_DESIGNER',
-                authenticator: '',
-                email: 'marek@webspace.pl',
-                first_name: 'Marek',
-                last_name: 'Stankiewicz',
-                password: 'hjgshdafadsnfibd,n;',
-                avatar: 'vision',
-                avatar_url: '/uploads/images/avatar/vision.jpg',
-                createdAt:'2019-08-23'
-            },
-            {
-                user_id: '@/users/3',
-                department: 'Social media maverick',
-                roles: 'ROLE_SOCIAL_MEDIA',
-                authenticator: '',
-                email: 'michal@webspace.pl',
-                first_name: 'Michał',
-                last_name: 'Stankiewicz',
-                password: 'hjgshdafadsnfibd,n;',
-                avatar: 'vision',
-                avatar_url: '/uploads/images/avatar/vision.jpg',
-                createdAt: '2019-05-23'
-            }
-        ],
+        users: [],
         user: null,
         loading: false,
-        error: null
+        error: null,
+        progress: null,
     },
     getters: {
         loadedBase: (state) => {
@@ -154,6 +116,9 @@ export default new Vuex.Store({
             if (state.user !== null && state.user !== undefined) {
                return  state.online = true
             }
+        },
+        progress: (state) => {
+            return state.progress
         }
     },
     mutations: {
@@ -161,11 +126,9 @@ export default new Vuex.Store({
             state.messages.push(msg)
         },
         setLoadedUsers:(state, payload) => {
-            console.log(`setLoadedUsers: ${payload}`);
             state.users.push(payload)
         },
         createdUser: (state, payload) => {
-            console.log(`createdUser: ${payload}`);
             state.users.push(payload)
         },
         updatedUser: (state, user) => {
@@ -175,8 +138,8 @@ export default new Vuex.Store({
                 }
             });
         },
-        deletedUser: (state, user_id) => {
-            let index = state.users.findIndex(user => user.user_id == user_id)
+        deletedUser: (state, email) => {
+            let index = state.users.findIndex(user => user.email == email)
             state.users.splice(index, 1)
         },
         setUser: (state, payload) => {
@@ -195,22 +158,28 @@ export default new Vuex.Store({
             state.user = null
             state.online = false
         },
+        setProgress: (state, payload) => {
+            state.progress = payload
+        },
+        clearProgress: (state) => {
+            state.progress = null
+        }
     },
     actions: {
-        deletedUser({ commit }, user_id) {
+        deletedUser({ commit }, email) {
             db
                 .collection('users')
-                .where('user_id', '==', user_id)
+                .where('email', '==', email)
                 .get()
                 .then(query => {
                     query.forEach(doc => {
                         doc.ref.delete()
                     });
-                    commit('deletedUser', user_id)
+                    commit('deletedUser', email)
                     commit('addMessage', {
                         icon: 'fas fa-envelope',
                         color: 'success',
-                        text: 'Użytkownik został usuniety',
+                        text: `Użytkownik o meilu ${email} został usuniety`,
                         snackbar: true,
                     })
                 })
@@ -251,25 +220,6 @@ export default new Vuex.Store({
                     })
                 })
         },
-        // editUser ({commit}, user_id, next) {
-        //     db.collection('users').where('user_id', '==', user_id).get()
-        //         .then(query => {
-        //             query.forEach(doc => {
-        //                 next(vm => {
-        //                     vm.user_id = doc.data().user_id
-        //                     vm.department = doc.data().department
-        //                     vm.roles = doc.data().roles
-        //                     vm.authenticator = doc.data().authenticator
-        //                     vm.email = doc.data().email
-        //                     vm.first_name = doc.data().first_name
-        //                     vm.last_name = doc.data().last_name
-        //                     vm.avatar = doc.data().avatar
-        //                     vm.avatar_url = doc.data().avatar_url
-        //                     vm.createdAt = doc.data().createdAt
-        //                 })
-        //             })
-        //         })
-        // },
         loadUsers ({commit}) {
             commit('setLoading', true)
 
@@ -308,11 +258,11 @@ export default new Vuex.Store({
                 }) 
         },
         createdUser({ commit }, payload) {
-            db
-                .collection('users')
+            db.collection('users')
                 .add(payload)
                 .then(docRef => {
-                    const key = docRef.id
+                    let key = docRef.id
+                    
                     commit('createdUser', { ...payload, id: key })
                     commit('addMessage', {
                         icon: 'fas fa-envelope',
@@ -410,6 +360,14 @@ export default new Vuex.Store({
                         snackbar: true,
                     })
                 })
+        },
+        progressEvent({commit}, payload) {
+            commit('setProgress', payload)
+
+            if (payload == 100) {
+                commit('clearProgress')
+            }
+            
         }
     },
     modules: {
