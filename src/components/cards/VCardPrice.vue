@@ -1,5 +1,5 @@
 <template>
-  <v-card outlined raised :elevation="12" color="white darken-2" max-width="300" class="card-price mx-auto">
+  <v-card outlined raised :elevation="12" color="white darken-2" max-width="300" class="card-price mx-auto" v-sa>
     <v-flex>
 
       <v-card-title class="cyan--text deep-purple font-weight-bold custom-transform-class">{{ item.title }}</v-card-title>
@@ -65,5 +65,16 @@ export default {
     flex-direction: row;
     flex-wrap: wrap;
     align-content: space-between;
+  }
+
+  .before-enter {
+    opacity: 0;
+    transform: scale(0.6);
+    transition: all 1.2s ease;
+  }
+
+  .enter {
+    opacity: 1;
+    transform: scale(1) rotateZ(0deg) translate(0, 0);
   }
 </style>

@@ -6,7 +6,7 @@ const animationScrollObserver = new IntersectionObserver(
                 animationScrollObserver.unobserve(entry.target);
             }
         });
-    }
+    }, { rootMargin: "0px 0px -200px 0px" }
 );
 
 export default {

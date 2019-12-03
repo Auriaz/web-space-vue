@@ -5,7 +5,7 @@
                 <v-avatar>
                     <v-img :src="image.src"  alt="Avatar" width="100" height="50" ></v-img>
                 </v-avatar>
-            </div>                              
+            </div>                            
         </div>
 
         <div class="about__content">
@@ -50,12 +50,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/settings/_colors';   
     .about {
         width: 100%;
         height: 100%;
         position: relative;
         display: flex;
         flex-flow: wrap row;
+ 
         &__box {
             &-images {
                 width: 20%;

@@ -17,21 +17,11 @@
 
         <div class="home-entry">
             <span class="home-entry__box">
-                <img class="home-entry__box--image" src="../assets/images/entry5.jpg" alt="entry">
+                <img class="home-entry__box--image d-none d-md-block" src="../assets/images/entry5.jpg" alt="entry">
             </span>
 
-            <div class="home-entry__card" v-sa>
-                <div class="home-entry__card--header">
-                    <span class="home-entry__card--title cyan--text darken-4 display-1 font-italic font-weight-bold">
-                        {{ fetchEntry.content.title }}
-                    </span>
-                </div>
-
-                <div class="home-entry__card--body">
-                    <span class="home-entry__card--text">
-                       {{ fetchEntry.content.description }}
-                    </span>
-                </div>
+            <div class="home-entry__card">
+                <v-card-entry :content="fetchEntry.content"/>
             </div>
         </div>
 
@@ -40,8 +30,8 @@
                 <img class="home-entry__box--image" src="../assets/images/about.jpg" alt="entry">
             </span>
 
-            <div class="home-introduction__cards" v-sa>
-                <v-card-introduction v-for="introduction in fetchIntroductions.content" :key="introduction.id" :item="introduction" />
+            <div class="home-introduction__cards">
+                <v-card-introduction v-for="introduction in fetchIntroductions.content" :key="introduction.id" :item="introduction"/>
             </div>
         </div>
 
@@ -71,6 +61,7 @@
 </template>
 
 <script>
+import VCardEntry  from '../components/cards/VCardEntry';
 import VCardIntroduction  from '../components/cards/VCardIntroduction';
 import VExpansionPanelAbout  from '../components/panels/VExpansionPanelAbout';
 import VCardPrice  from '../components/cards/VCardPrice';
@@ -87,6 +78,7 @@ export default {
         VExpansionPanelAbout: VExpansionPanelAbout,
         VCardPrice: VCardPrice,
         VCardContact: VCardContact,
+        VCardEntry: VCardEntry
     },
     computed: {
 
@@ -108,16 +100,3 @@ export default {
     },
 }
 </script> 
-
-<style lang="scss" scoped>
-.before-enter {
-    opacity: 0;
-    transform: translateY(100px);
-    transition: all 2s ease-out;
-}
-
-.enter {
-    opacity: 1;
-    transform: translateY(0px);
-}
-</style>

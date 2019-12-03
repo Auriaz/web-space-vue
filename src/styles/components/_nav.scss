@@ -14,22 +14,11 @@
 		flex-flow: wrap column;
 
 		@include inMedium {
-			background-color: $mainPurple;
+			// background-color: $mainPurple;
 			border-bottom: 2px solid $mainDark;
 		}
 
 		&-sm {
-			// width: 100%;
-			position: relative;
-			// display: flex;
-			top: 0;
-			left: 0;
-			flex-direction: column;
-			flex-wrap: wrap;
-			justify-content: space-between;
-			padding: 20px;
-			cursor: pointer;
-
 			@include atMedium {
 				display: none;
 			}

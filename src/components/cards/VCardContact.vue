@@ -1,5 +1,5 @@
 <template>
-    <v-card flat color="deep-purple" class="contact white--text">
+    <v-card flat color="deep-purple" class="contact white--text" v-sa>
         <v-layout row class="contact__box">
             <v-col class="col-12 col-md-8 contact__box-contact">
                 <v-col class="col-12">
@@ -80,23 +80,16 @@ export default {
         width: 100%;
         height: 100%;
         position: relative;
-        // background-color: none !important;
+    }
 
-        &__box {
+    .before-enter {
+    opacity: 0;
+    transform: scale(0.6);
+    transition: all 1.2s ease;
+    }
 
-            &-contact {
-
-            }
-
-            &-form {
-                // align-items: center;
-
-                // &--form {
-                //     width: 400px;
-                //     height: 100%;
-                //     position: relative;
-                // }
-            }
-        }
+    .enter {
+    opacity: 1;
+    transform: scale(1) rotateZ(0deg) translate(0, 0);
     }
 </style>

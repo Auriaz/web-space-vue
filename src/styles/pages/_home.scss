@@ -14,7 +14,7 @@
     
     &-entry {
         width: 100%;
-        height: auto;
+        height: 100vh;
         position: relative;
         background-color: $mainWhite;
 
@@ -28,7 +28,7 @@
             position: relative;
             top: 10%;
             left: 5%;
-            margin: 20% 0 10% 0;
+            margin: 20% 0 0 0;
             z-index: 2;
             
             @include atSmaller {
@@ -47,6 +47,8 @@
                 width: 100%;
                 text-align: center;
                 padding: 20px;
+                transform: translateX(150px);
+                transition-delay: .1s;
             }
     
             &--title {
@@ -58,6 +60,8 @@
             &--body {
                 width: 100%;
                 padding: 10px 20px;
+                transform: translateY(250px);
+                transition-delay: .4s;
             }
     
             &--text {
@@ -89,7 +93,6 @@
         min-height: auto;
         position: relative;
         background-color: darken($color: $mainPurple, $amount: 10%);
-        margin: 50px 0;
         z-index: 2;
 
         @include atMedium {

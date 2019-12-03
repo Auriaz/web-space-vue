@@ -8,13 +8,13 @@
                 </router-link> 
             </v-toolbar-title>
 
-            <div class="nav-wrap-sm" @click="active = !active">            
-                <v-icon class="fas fa-bars"></v-icon>
-            </div>
-
-            <v-app-bar-nav-icon tile large icon class="nav-open ma-2" color="blue-grey" @click.stop="drawer=!drawer">
-                <i class="fas fa-sign-in-alt fa-lg"></i>
-            </v-app-bar-nav-icon>   
+            <v-btn small fab outlined class="nav-wrap-sm ma-2" color="cyan" @click="active = !active">
+                <v-icon>mdi-menu</v-icon>
+            </v-btn>
+          
+            <v-btn small fab outlined class="nav-open ma-2" color="cyan" @click.stop="drawer = !drawer">
+                <v-icon>mdi-menu</v-icon>
+            </v-btn>
 
             <v-spacer></v-spacer>
 
@@ -62,7 +62,7 @@
 
                     <v-tooltip bottom>
                         <template v-slot:activator="{ on }">
-                            <v-btn small fab outlined class="  ma-3 mx-10" color="cyan" @click.stop="drawer = !drawer" v-on="on">
+                            <v-btn small fab outlined class="d-none d-md-block ma-3 mx-10" color="cyan" @click.stop="drawer = !drawer" v-on="on">
                                 <v-icon>mdi-menu</v-icon>
                             </v-btn>   
                         </template>
