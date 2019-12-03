@@ -20,7 +20,7 @@
                 <img class="home-entry__box--image" src="../assets/images/entry5.jpg" alt="entry">
             </span>
 
-            <div class="home-entry__card">
+            <div class="home-entry__card" v-sa>
                 <div class="home-entry__card--header">
                     <span class="home-entry__card--title cyan--text darken-4 display-1 font-italic font-weight-bold">
                         {{ fetchEntry.content.title }}
@@ -40,7 +40,7 @@
                 <img class="home-entry__box--image" src="../assets/images/about.jpg" alt="entry">
             </span>
 
-            <div class="home-introduction__cards" >
+            <div class="home-introduction__cards" v-sa>
                 <v-card-introduction v-for="introduction in fetchIntroductions.content" :key="introduction.id" :item="introduction" />
             </div>
         </div>
@@ -108,3 +108,16 @@ export default {
     },
 }
 </script> 
+
+<style lang="scss" scoped>
+.before-enter {
+    opacity: 0;
+    transform: translateY(100px);
+    transition: all 2s ease-out;
+}
+
+.enter {
+    opacity: 1;
+    transform: translateY(0px);
+}
+</style>

@@ -6,13 +6,13 @@ import store from './store/index';
 import vuetify from './plugins/vuetify';
 import auth from './firebase/auth';
 import db from "./firebase/firestore";
-import 'aos/dist/aos.css';
-
+import ScrollAnimation from './directives/scrollanimation';
 
 require('@fortawesome/fontawesome-free/css/all.min.css');
 require('@fortawesome/fontawesome-free/js/all.js');
-
 import "./styles/style.scss";
+// Adding the v-sa directive to animation while scrolling
+Vue.directive('sa', ScrollAnimation);
 
 Vue.config.productionTip = false;
 
