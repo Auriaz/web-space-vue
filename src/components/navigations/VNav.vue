@@ -1,6 +1,6 @@
 <template>
     <v-app-bar elevate-on-scroll clipped-right fixed >
-        <nav class="nav">
+        <nav class="nav deep-purple">
             <v-toolbar-title class="nav-logo">
                 <router-link to="/">
                     <span class="cyan--text font-weight-bold font-lg font-italic">Web</span>
@@ -22,7 +22,7 @@
                 <span class="nav-list">
                     <v-tooltip bottom>
                         <template v-slot:activator="{ on }">
-                            <a href="/#contact" class="nav-section blue-grey--text font-weight-bold" v-on="on">
+                            <a href="/#contact" class="nav-section cyan--text font-weight-bold" v-on="on">
                                 Kontakt
                             </a>   
                         </template>
@@ -32,7 +32,7 @@
 
                     <v-tooltip bottom>
                         <template v-slot:activator="{ on }">
-                            <a href="/#price" class="nav-section blue-grey--text font-weight-bold" v-on="on">
+                            <a href="/#price" class="nav-section cyan--text font-weight-bold" v-on="on">
                                 Cennik
                             </a>   
                         </template>
@@ -42,7 +42,7 @@
                     
                     <v-tooltip bottom>
                         <template v-slot:activator="{ on }">
-                            <a href="/#about" class="nav-section blue-grey--text font-weight-bold" v-on="on">
+                            <a href="/#about" class="nav-section cyan--text font-weight-bold" v-on="on">
                                 O firmie
                             </a>   
                         </template>
@@ -52,7 +52,7 @@
                     
                     <v-tooltip bottom>
                         <template v-slot:activator="{ on }">
-                            <a href="/#introduction" class="nav-section blue-grey--text font-weight-bold" v-on="on">
+                            <a href="/#introduction" class="nav-section cyan--text font-weight-bold" v-on="on">
                                 Oferta
                             </a>   
                         </template>
@@ -62,7 +62,7 @@
 
                     <v-tooltip bottom>
                         <template v-slot:activator="{ on }">
-                            <v-btn small fab outlined class="  ma-3 mx-10" color="blue-grey" @click.stop="drawer = !drawer" v-on="on">
+                            <v-btn small fab outlined class="  ma-3 mx-10" color="cyan" @click.stop="drawer = !drawer" v-on="on">
                                 <v-icon>mdi-menu</v-icon>
                             </v-btn>   
                         </template>
@@ -73,7 +73,7 @@
             </div>
         </nav>
 
-        <v-navigation-drawer app temporary absolute v-model="drawer" right class="blue site-bar">
+        <v-navigation-drawer app temporary absolute v-model="drawer" right class="deep-purple site-bar">
             <v-list>
                 <v-list-item-group>
                     <v-layout column align-center>
@@ -85,7 +85,7 @@
                         </v-flex>
 
                         <v-flex class="mt-1 mb-4">
-                            <h1 v-if="online && user" class="title white--text">{{ user.first_name }} {{ user.last_name }}</h1>
+                            <h1 v-if="online && user" class="title cyan--text">{{ user.first_name }} {{ user.last_name }}</h1>
                             <h1 v-else class="title white--text">Web-Space.pl</h1>
                         </v-flex>
 
@@ -96,7 +96,7 @@
 
                     <v-list-item v-for="link in links" :key="link.text" router :to="link.route">
                         <v-list-item-icon>
-                            <v-icon class="fas" :class="link.icon"></v-icon>
+                            <v-icon class="fas" :class="`cyan--text ${link.icon}`" ></v-icon>
                         </v-list-item-icon>
 
                         <v-list-item-content>
@@ -106,7 +106,7 @@
 
                     <v-list-item v-if="online && user" @click="logout" router to="/">
                         <v-list-item-icon>
-                            <v-icon>mdi-logout-variant</v-icon>
+                            <v-icon class="cyan--text">mdi-logout-variant</v-icon>
                         </v-list-item-icon>
 
                         <v-list-item-content>
@@ -116,7 +116,7 @@
 
                     <v-list-item v-else @click="activated = !activated">
                         <v-list-item-icon>
-                            <v-icon>mdi-login-variant</v-icon>
+                            <v-icon class="cyan--text">mdi-login-variant</v-icon>
                         </v-list-item-icon>
 
                         <v-list-item-content>
@@ -147,7 +147,7 @@ export default {
             active: false,
             drawer: false,    
             name: 'skontaktuj się',
-            colorBtn: 'success',
+            colorBtn: 'cyan white--text',
             activated: false,
             links: [
                 {icon: 'fa-home',           text: 'Home',     route: '/'},

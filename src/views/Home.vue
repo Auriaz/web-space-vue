@@ -7,7 +7,7 @@
     <div class="home">
         <v-tooltip bottom>
             <template v-slot:activator="{ on }">
-                <v-btn outlined fab href="/#introduction" small class="home-btn blue--text" v-on="on">
+                <v-btn outlined fab href="/#introduction" small class="home-btn white--text" v-on="on">
                     <i class="fas fa-arrow-alt-circle-down fa-2x"></i>
                 </v-btn>
             </template>
@@ -36,8 +36,12 @@
         </div>
 
         <div class="home-introduction" id="introduction">
+            <span class="home-entry__box">
+                <img class="home-entry__box--image" src="../assets/images/about.jpg" alt="entry">
+            </span>
+
             <div class="home-introduction__cards" >
-                <v-card-introduction v-for="introduction in fetchIntroductions.content" :key="introduction.id" :item="introduction"/>
+                <v-card-introduction v-for="introduction in fetchIntroductions.content" :key="introduction.id" :item="introduction" />
             </div>
         </div>
 

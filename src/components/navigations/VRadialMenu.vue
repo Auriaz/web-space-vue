@@ -4,7 +4,7 @@
             <v-tooltip top>
                 <template v-slot:activator="{ on }">
                     <div v-bind:class="{ toggle: toggle }" v-on="on">
-                        <v-btn fab color="blue" v-if="!toggle">
+                        <v-btn fab color="cyan" v-if="!toggle">
                             <v-icon large color="white">mdi-menu</v-icon>
                         </v-btn>
                         

@@ -19,7 +19,7 @@ export default new Vuex.Store({
             {
                 section: 'entry',
                 content: { 
-                    id: 1, title: 'Strona w budowie', description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit cumque quam voluptatem odio sed alias pariatur quos eveniet iure', icon: 'fa-edit', createdAt: '2019-07-17'
+                    id: 1, title: 'Strona w budowie', description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit cumque quam voluptatem odio sed alias pariatur quos eveniet iure', icon: 'fa-edit', createdAt: '2019-07-17', aos: ''
                 },
                 
                 updatedAt: ''

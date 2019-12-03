@@ -14,7 +14,7 @@
             <v-date-picker v-model="due"></v-date-picker>
         </v-menu> -->
 
-        <v-btn class="success mx-0 mt-3" @click="submit" :loading="loading">Wyślij</v-btn>
+        <v-btn class="cyan white--text mx-0 mt-3" @click="submit" :loading="loading">Wyślij</v-btn>
     </v-form>
 </template>
 
